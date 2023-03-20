@@ -6,8 +6,9 @@ import loading from './loading.svg';
 import './App.css';
 import Sound from 'react-sound';
 import Button from './Button';
+import { useState, useEffect } from 'react';
 
-const apiToken = '<<Copy the Spotify token here>>';
+const apiToken = '';
 
 function shuffleArray(array) {
   let counter = array.length;
@@ -29,7 +30,20 @@ function getRandomNumber(x) {
 }
 
 const App = () => {
-
+  const [ text, setText ] = useState('');
+  useEffect(() => {
+    fetch('https://api.spotify.com/v1/me/tracks', {
+      method: "GET",
+      headers: {
+        Authorization: 'Bearer ' + apiToken,
+      },
+    })
+    .then(response => response.json())
+    .then((data) => {
+      console.log('Response '+data);
+    })
+    .then(setText('Tracks Received!'))
+  });
   return (
     <div className="App">
       <header className="App-header">
@@ -37,7 +51,7 @@ const App = () => {
         <h1 className="App-title">Welcome on the Name that Tune</h1>
       </header>
       <div className="App-images">
-        <p>You will have to change the code to run a real game! Done!!</p>
+        <p>{text}</p>
       </div>
       <div className="App-buttons">
       </div>
